@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Expense_Tracker.Models.Category>
+
+@{
+    ViewData["PageTitle"] = "Categories";
+    ViewData["PageActionText"] = "+ New Category";
+    ViewData["PageActionUrl"] = "/Category/AddorEdit";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <ejs-grid id="categories" dataSource="@Model" gridLines="None" 
+        allowSorting="true" allowPaging="true">
+        <e-grid-pagesettings pageSize="3">
+
+        </e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column headerText="Category" field="TitleWithIcon" width="150px"></e-grid-column>
+                <e-grid-column headerText="Type" template="#typeColumnTemplate" width="150px"></e-grid-column>
+                <e-grid-column headerText="Actions" template="#actionColumnTemplate" width="150px"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div class="col-md-4">
+        <div class="widget h-100  d-flex justify-content-center align-items-center" >
+            <i class="fa-solid fa-shapes fa-2xl"></i>
+        </div>
+    </div>
+
+</div>
+
+<script id="typeColumnTemplate" type="text/x-template">
+  ${if(Type=="Income")}
+      <span class="badge bg-success">${Type}</span>
+  ${else}
+        <span class="badge bg-danger">${Type}</span>
+ ${/if}
+</script>
+
+<script id="actionColumnTemplate" type="text/x-template">
+    <div class="d-flex flex-row justify-content-start">
+        <a class="btn btn-sm no-a-decoration" href="/Category/AddorEdit/${CategoryId}">
+            <i class="fa-solid fa-pencil fa-lg"></i>
+        </a>
+            <form action="/Category/Delete/${CategoryId}" method="post">
+                @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-sm btn-link no-a-decoration"
+                onclick="return confirm(&quot; Are sure to delete this record?&quot;)">
+            <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
+        </button>
+    </form>
+
+    </div>
+</script>
+
+
+
+
+@* The <div class="row">
+    creates a Bootstrap row to contain the grid and the widget side by side.
+    The first column (col-md-7) contains the EJ2 Grid to display categories.
+    The EJ2 Grid is initialized using the ejs-grid tag, and it uses the model (@Model) as the data source.
+    It has three columns: "Category" (displaying the Title field), "Type" (displaying the Type field), and "Actions" (which can be further implemented).
+    The second column (col-md-5) contains a widget with a background color and an icon.
+    The widget is styled using Bootstrap classes (widget h-100 d-flex justify-content-center align-items-center).
+    The icon is displayed using Font Awesome classes (fa-solid fa-shapes fa-2xl). The specific icon being displayed is "fa-shapes" from the Font Awesome Solid set, and it's set to extra-large (fa-2xl). The icon represents a category or shape. The background color is set to #212b36.
+ *@
